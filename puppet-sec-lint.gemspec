@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require_relative "lib/puppet/sec/lint/version"
+require_relative "lib/puppet-sec-lint/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "puppet-sec-lint"
-  spec.version       = Puppet::Sec::Lint::VERSION
+  spec.version       = PuppetSecLint::VERSION
   spec.authors       = ["Tiago Ribeiro"]
   spec.email         = ["tiago7b27@gmail.com"]
 
-  spec.summary       = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description   = "TODO: Write a longer description or delete this line."
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "This is a security linter for the puppet language"
+  spec.description   = "This is a security linter for the puppet language"
+  spec.homepage      = "https://github.com/TiagoR98/puppet-sec-lint"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata["source_code_uri"] = "https://github.com/TiagoR98/puppet-sec-lint"
+  spec.metadata["changelog_uri"] = "https://github.com/TiagoR98/puppet-sec-lint"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

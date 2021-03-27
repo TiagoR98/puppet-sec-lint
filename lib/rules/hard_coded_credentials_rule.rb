@@ -8,6 +8,8 @@ class HardCodedCredentialsRule < Rule
   @configurations+=[@trigger_words_conf]
 
   def self.AnalyzeTokens(tokens)
+    result = ""
+
     tokens.each do |indi_token|
       nxt_token     = indi_token.next_code_token # next token which is not a white space
       if (!nxt_token.nil?) && (!indi_token.nil?)
@@ -28,20 +30,20 @@ class HardCodedCredentialsRule < Rule
               nxt_nxt_type = nxt_nxt_token.type.to_s  ## to handle false positives,
 
               if (self.TriggerWordInString(token_valu)) && ((nxt_nxt_val.length > 0)) && ((!nxt_nxt_type.eql? 'VARIABLE') && (!token_valu.include? "("))
-                warning = {
+                result += {
                   message: 'SECURITY:::HARD_CODED_SECRET_V1:::Do not hard code secrets. This may help an attacker to attack the system. You can use hiera to avoid this issue.',
                   line:    indi_token.line,
                   column:  indi_token.column,
                   token:   token_valu
-                }
-
-                puts warning
+                }.to_s+"\n"
               end
             end
           end
         end
       end
     end
+
+    return result
   end
 
   def self.TriggerWordInString(string)

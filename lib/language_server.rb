@@ -4,7 +4,7 @@ require 'json'
 require 'uri'
 require_relative 'rule_engine'
 require_relative 'visitors/configuration_visitor'
-require_relative 'configuration_page_manager'
+require_relative 'facades/configuration_page_facade'
 
 class LanguageServer
   def call(env)
@@ -19,7 +19,7 @@ class LanguageServer
       if req.post?
         process_form(req)
       elsif req.get?
-        configurations_page(req)
+        configurations_page
       end
     end
 
@@ -29,10 +29,7 @@ class LanguageServer
     new_conf = URI.decode_www_form(req.body.read)
     new_conf_hash = Hash[new_conf.map {|key, value| [key, value]}]
 
-
-    configuration_hash = ConfigurationVisitor.Visit
-    ConfigurationPageManager.ApplyConfigurations(configuration_hash, new_conf_hash)
-
+    ConfigurationPageFacade.ApplyConfigurations(new_conf_hash)
 
     return [200, { 'Content-Type' => 'text/plain' }, ["Changes saved successfully"]]
   end
@@ -44,18 +41,16 @@ class LanguageServer
       File.open(body['file'], 'rb:UTF-8') do |f|
         code = f.read
 
-        RuleEngine.analyzeDocument(code)
+        result = RuleEngine.analyzeDocument(code)
+        return [200, { 'Content-Type' => 'application/text' }, [result]]
       end
-
-      return [200, { 'Content-Type' => 'application/text' }, ["good"]]
     end
 
     [401, { 'Content-Type' => 'text/html' }, ['Invalid Request']]
   end
 
-  def configurations_page(req)
-    configuration_hash = ConfigurationVisitor.Visit
-    configuration_page = ConfigurationPageManager.AssemblePage(configuration_hash)
+  def configurations_page
+    configuration_page = ConfigurationPageFacade.AssemblePage
 
     return [200, { 'Content-Type' => 'text/html' }, [configuration_page]]
   end

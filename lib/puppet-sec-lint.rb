@@ -1,7 +1,4 @@
-#require 'rack'
-#require 'thin'
 require_relative 'rule_engine'
-#require 'language_server'
 require 'json'
 require 'optparse'
 require 'optparse/uri'
@@ -21,11 +18,7 @@ raise OptionParser::MissingArgument if options[:file].nil?
 File.open(options[:file].to_s, 'rb:UTF-8') do |f|
   code = f.read
 
-  RuleEngine.analyzeDocument(code)
+  puts RuleEngine.analyzeDocument(code)
 end
 
 puts ConfigurationVisitor.Visit
-
-
-
-#Rack::Handler::Thin.run(LanguageServer.new, Port: 3000)

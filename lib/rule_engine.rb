@@ -19,14 +19,16 @@ class RuleEngine
 
 
   def self.analyzeDocument(code)
+    result=""
     tokens = self.getTokens(code)
 
     @rules.each do |rule|
       if rule.configurations[0].value
-        rule.AnalyzeTokens(tokens)
+        result += rule.AnalyzeTokens(tokens)
       end
     end
 
+    return result
   end
 
 end

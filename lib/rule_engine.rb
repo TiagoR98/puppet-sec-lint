@@ -1,9 +1,14 @@
 require 'puppet-lint'
 require_relative 'rule'
-require 'hard_coded_credentials_rule'
+require_relative 'hard_coded_credentials_rule'
+require_relative 'no_http_rule'
 
 class RuleEngine
-  @@rules=[HardCodedCredentialsRule]
+  @rules=[HardCodedCredentialsRule,NoHTTPRule]
+
+  class << self
+    attr_accessor :rules
+  end
 
   def self.getTokens(code)
     lexer = PuppetLint::Lexer.new
@@ -15,7 +20,7 @@ class RuleEngine
   def self.analyzeDocument(code)
     tokens = self.getTokens(code)
 
-    @@rules.each do |rule|
+    @rules.each do |rule|
       rule.AnalyzeTokens(tokens)
     end
 

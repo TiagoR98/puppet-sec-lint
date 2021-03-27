@@ -1,4 +1,12 @@
+require_relative 'list_configuration'
+
 class HardCodedCredentialsRule < Rule
+  @default_trigger_words = %w[pwd password pass uuid key crypt secret certificate id cert token ssh_key md5 rsa ssl]
+  @trigger_words_conf = ListConfiguration.new("List of trigger words", @default_trigger_words, "List of words that identify a variable with credentials")
+
+  @name = "Hard Coded Credentials"
+  @configurations+=[@trigger_words_conf]
+
   def self.AnalyzeTokens(tokens)
     tokens.each do |indi_token|
       nxt_token     = indi_token.next_code_token # next token which is not a white space
@@ -19,12 +27,7 @@ class HardCodedCredentialsRule < Rule
               nxt_nxt_val  = nxt_nxt_token.value.downcase
               nxt_nxt_type = nxt_nxt_token.type.to_s  ## to handle false positives,
 
-              if (((token_valu.include? "pwd") || (token_valu.include? "password") || (token_valu.include? "pass") ||
-                (token_valu.include? "uuid") || (token_valu.include? "key") || (token_valu.include? "crypt") ||
-                (token_valu.include? "secret") || (token_valu.include? "certificate") || (token_valu.include? "id") ||
-                (token_valu.include? "cert") || (token_valu.include? "token") || (token_valu.include? "ssh_key") ||
-                (token_valu.include? "md5") || (token_valu.include? "rsa") || (token_valu.include? "ssl")
-              ) && ((nxt_nxt_val.length > 0)) && ((!nxt_nxt_type.eql? 'VARIABLE') && (!token_valu.include? "(")))
+              if (self.TriggerWordInString(token_valu)) && ((nxt_nxt_val.length > 0)) && ((!nxt_nxt_type.eql? 'VARIABLE') && (!token_valu.include? "("))
                 warning = {
                   message: 'SECURITY:::HARD_CODED_SECRET_V1:::Do not hard code secrets. This may help an attacker to attack the system. You can use hiera to avoid this issue.',
                   line:    indi_token.line,
@@ -39,5 +42,9 @@ class HardCodedCredentialsRule < Rule
         end
       end
     end
+  end
+
+  def self.TriggerWordInString(string)
+    return @trigger_words_conf.value.any? { |word| string.include?(word) }
   end
 end

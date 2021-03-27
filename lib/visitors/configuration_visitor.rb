@@ -1,5 +1,5 @@
 require_relative 'visitor'
-require_relative 'rule_engine'
+require_relative '../rule_engine'
 
 class ConfigurationVisitor < Visitor
   def self.Visit

@@ -1,4 +1,4 @@
-require_relative 'list_configuration'
+require_relative '../configurations/list_configuration'
 
 class NoHTTPRule < Rule
   @name="No HTTP Connections"

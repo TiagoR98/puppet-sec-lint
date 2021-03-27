@@ -1,9 +1,9 @@
-require_relative 'boolean_configuration'
+require_relative '../configurations/boolean_configuration'
 
 class Rule
 
   def self.inherited(subclass)
-    subclass.configurations = [BooleanConfiguration.new("Enable Configuration", true, "Enable or disable the evaluation of the rule")]
+    subclass.configurations = [BooleanConfiguration.new("Enable Configuration", true, "Enable or disable the evaluation of the rules")]
   end
 
   class << self

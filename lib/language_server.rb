@@ -2,7 +2,7 @@ require "rack"
 require "thin"
 require 'json'
 require_relative 'rule_engine'
-require_relative 'configuration_visitor'
+require_relative 'visitors/configuration_visitor'
 
 class LanguageServer
   def call(env)

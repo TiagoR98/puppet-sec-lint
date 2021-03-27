@@ -1,7 +1,8 @@
 require 'puppet-lint'
-require_relative 'rule'
-require_relative 'hard_coded_credentials_rule'
-require_relative 'no_http_rule'
+require_relative 'rules/rule'
+require_relative 'rules/hard_coded_credentials_rule'
+require_relative 'rules/no_http_rule'
+
 
 class RuleEngine
   @rules=[HardCodedCredentialsRule,NoHTTPRule]

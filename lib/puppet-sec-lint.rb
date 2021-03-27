@@ -1,12 +1,11 @@
 #require 'rack'
 #require 'thin'
 require_relative 'rule_engine'
-require 'hard_coded_credentials_rule'
 #require 'language_server'
 require 'json'
 require 'optparse'
 require 'optparse/uri'
-require 'configuration_visitor'
+require 'visitors/configuration_visitor'
 
 options = {}
 OptionParser.new do |opts|

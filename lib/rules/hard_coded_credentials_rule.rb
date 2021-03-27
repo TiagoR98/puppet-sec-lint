@@ -1,4 +1,4 @@
-require_relative 'list_configuration'
+require_relative '../configurations/list_configuration'
 
 class HardCodedCredentialsRule < Rule
   @default_trigger_words = %w[pwd password pass uuid key crypt secret certificate id cert token ssh_key md5 rsa ssl]

@@ -1,17 +1,17 @@
-require_relative 'visitor'
 require_relative '../rule_engine'
 
-class ConfigurationVisitor < Visitor
+class ConfigurationVisitor
   def self.Visit
-    result =""
+    configurationsHash = {}
 
     rules = RuleEngine.rules
     rules.each do |rule|
+      configurationsHash[rule] = []
       rule.configurations.each do |configuration|
-        result += "Rule #{rule.name} -> Configuration #{configuration.name}\n"
+        configurationsHash[rule].append(configuration)
       end
     end
 
-    return result
+    return configurationsHash
   end
 end

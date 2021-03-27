@@ -22,7 +22,9 @@ class RuleEngine
     tokens = self.getTokens(code)
 
     @rules.each do |rule|
-      rule.AnalyzeTokens(tokens)
+      if rule.configurations[0].value
+        rule.AnalyzeTokens(tokens)
+      end
     end
 
   end

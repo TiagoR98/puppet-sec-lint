@@ -2,5 +2,8 @@ require_relative 'configuration'
 
 class ListConfiguration < Configuration
 
-  @displayfield=DisplayField[:SelectBox]
+  def initialize(name, value, description)
+    super
+    @displayfield=DisplayField[:SelectBox]
+  end
 end

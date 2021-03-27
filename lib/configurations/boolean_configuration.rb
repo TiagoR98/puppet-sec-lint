@@ -2,6 +2,9 @@ require_relative 'configuration'
 
 class BooleanConfiguration < Configuration
 
-  @displayfield=DisplayField[:CheckBox]
+  def initialize(name, value, description)
+    super
+    @displayfield=DisplayField[:CheckBox]
+  end
 
 end

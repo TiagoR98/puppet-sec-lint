@@ -37,13 +37,26 @@ class LanguageServer
   def process_analysis(req)
     body = JSON.parse(req.body.read)
 
-    if body['file']
-      File.open(body['file'], 'rb:UTF-8') do |f|
-        code = f.read
+    if body['documentContent']
+      code = body['documentContent']
 
-        result = RuleEngine.analyzeDocument(code)
-        return [200, { 'Content-Type' => 'application/text' }, [result]]
+      result_json = []
+
+      result = RuleEngine.analyzeDocument(code) #convert to json
+
+      result.each do |sin|
+        result_json.append(JSON.generate({
+                             'name' => sin.type[:name],
+                             'message' => sin.type[:message],
+                             'recommendation' => sin.type[:recommendation],
+                             'begin_line' => sin.begin_line,
+                             'begin_char' => sin.begin_char,
+                             'end_line' => sin.end_line,
+                             'end_char' => sin.end_char
+                           }))
       end
+
+      return [200, { 'Content-Type' => 'application/json' }, [result_json.to_json]]
     end
 
     [401, { 'Content-Type' => 'text/html' }, ['Invalid Request']]

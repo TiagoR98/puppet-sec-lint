@@ -18,7 +18,11 @@ raise OptionParser::MissingArgument if options[:file].nil?
 File.open(options[:file].to_s, 'rb:UTF-8') do |f|
   code = f.read
 
-  puts RuleEngine.analyzeDocument(code)
+  result = RuleEngine.analyzeDocument(code)
+
+  result.each do |sin|
+    puts sin.ToString
+  end
 end
 
 puts ConfigurationVisitor.Visit

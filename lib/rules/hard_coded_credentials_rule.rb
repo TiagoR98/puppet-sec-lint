@@ -3,12 +3,13 @@ require_relative '../configurations/list_configuration'
 class HardCodedCredentialsRule < Rule
   @default_trigger_words = %w[pwd password pass uuid key crypt secret certificate id cert token ssh_key md5 rsa ssl]
   @trigger_words_conf = ListConfiguration.new("List of trigger words", @default_trigger_words, "List of words that identify a variable with credentials")
+  @test_conf = BooleanConfiguration.new("Test configuration", true, "This is just a test configuration")
 
   @name = "Hard Coded Credentials"
-  @configurations+=[@trigger_words_conf]
+  @configurations+=[@trigger_words_conf,@test_conf]
 
   def self.AnalyzeTokens(tokens)
-    result = ""
+    result = []
 
     tokens.each do |indi_token|
       nxt_token     = indi_token.next_code_token # next token which is not a white space
@@ -30,12 +31,7 @@ class HardCodedCredentialsRule < Rule
               nxt_nxt_type = nxt_nxt_token.type.to_s  ## to handle false positives,
 
               if (self.TriggerWordInString(token_valu)) && ((nxt_nxt_val.length > 0)) && ((!nxt_nxt_type.eql? 'VARIABLE') && (!token_valu.include? "("))
-                result += {
-                  message: 'SECURITY:::HARD_CODED_SECRET_V1:::Do not hard code secrets. This may help an attacker to attack the system. You can use hiera to avoid this issue.',
-                  line:    indi_token.line,
-                  column:  indi_token.column,
-                  token:   token_valu
-                }.to_s+"\n"
+                result.append(Sin.new(SinType::HardCodedCred, indi_token.line, indi_token.column, nxt_nxt_token.line, nxt_nxt_token.column+nxt_nxt_token.value.length))
               end
             end
           end

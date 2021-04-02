@@ -19,12 +19,12 @@ class RuleEngine
 
 
   def self.analyzeDocument(code)
-    result=""
+    result=[]
     tokens = self.getTokens(code)
 
     @rules.each do |rule|
       if rule.configurations[0].value
-        result += rule.AnalyzeTokens(tokens)
+        (result << rule.AnalyzeTokens(tokens)).flatten!
       end
     end
 

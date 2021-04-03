@@ -14,4 +14,14 @@ class ConfigurationVisitor
 
     return configurationsHash
   end
+
+  def self.GenerateIDs
+    configurationsHash = self.Visit
+
+    configurationsHash.each do |rule,configurations|
+      configurations.each do |configuration|
+        configuration.id = "#{rule}-#{configuration.name.downcase.gsub! ' ', '_'}"
+      end
+    end
+  end
 end

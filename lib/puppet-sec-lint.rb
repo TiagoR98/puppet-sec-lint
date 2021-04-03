@@ -3,6 +3,7 @@ require 'json'
 require 'optparse'
 require 'optparse/uri'
 require 'visitors/configuration_visitor'
+require 'facades/configuration_file_facade'
 
 options = {}
 OptionParser.new do |opts|
@@ -15,6 +16,9 @@ end.parse!
 
 raise OptionParser::MissingArgument if options[:file].nil?
 
+ConfigurationVisitor.GenerateIDs
+ConfigurationFileFacade.LoadConfigurations
+
 File.open(options[:file].to_s, 'rb:UTF-8') do |f|
   code = f.read
 
@@ -24,5 +28,3 @@ File.open(options[:file].to_s, 'rb:UTF-8') do |f|
     puts sin.ToString
   end
 end
-
-puts ConfigurationVisitor.Visit

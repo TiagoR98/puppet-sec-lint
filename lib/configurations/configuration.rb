@@ -7,7 +7,6 @@ class Configuration
     @name = name
     @value = value
     @description = description
-    @id = SecureRandom.uuid
   end
 
 end

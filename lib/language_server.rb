@@ -5,8 +5,12 @@ require 'uri'
 require_relative 'rule_engine'
 require_relative 'visitors/configuration_visitor'
 require_relative 'facades/configuration_page_facade'
+require_relative 'facades/configuration_file_facade'
 
 class LanguageServer
+  ConfigurationVisitor.GenerateIDs
+  ConfigurationFileFacade.LoadConfigurations
+
   def call(env)
     req = Rack::Request.new(env)
 
@@ -30,6 +34,7 @@ class LanguageServer
     new_conf_hash = Hash[new_conf.map {|key, value| [key, value]}]
 
     ConfigurationPageFacade.ApplyConfigurations(new_conf_hash)
+    ConfigurationFileFacade.SaveConfigurations
 
     return [200, { 'Content-Type' => 'text/plain' }, ["Changes saved successfully"]]
   end

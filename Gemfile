@@ -14,3 +14,5 @@ gem "puppet-lint"
 gem "rack"
 
 gem 'thin'
+
+gem 'inifile'

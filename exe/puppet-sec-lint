@@ -1,3 +1,35 @@
 #!/usr/bin/env ruby
 
-require "puppet/sec/lint"
+require_relative '../lib/rule_engine'
+require 'json'
+require 'optparse'
+require 'optparse/uri'
+require_relative '../lib/visitors/configuration_visitor'
+require_relative '../lib/facades/configuration_file_facade'
+require_relative '../lib/language_server'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: puppet-sec-lint [options]"
+
+  opts.on("-f", "--file FILE",URI, "Path of puppet file to be analyzed") do |file|
+    options[:file] = file
+  end
+end.parse!
+
+if options[:file].nil?
+  LanguageServer
+end
+
+ConfigurationVisitor.GenerateIDs
+ConfigurationFileFacade.LoadConfigurations
+
+File.open(options[:file].to_s, 'rb:UTF-8') do |f|
+  code = f.read
+
+  result = RuleEngine.analyzeDocument(code)
+
+  result.each do |sin|
+    puts sin.ToString
+  end
+end

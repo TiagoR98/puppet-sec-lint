@@ -17,7 +17,6 @@ class RuleEngine
     return tokens
   end
 
-
   def self.analyzeDocument(code)
     result=[]
     tokens = self.getTokens(code)

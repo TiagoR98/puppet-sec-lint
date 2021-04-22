@@ -2,10 +2,15 @@ require 'puppet-lint'
 require_relative 'rules/rule'
 require_relative 'rules/hard_coded_credentials_rule'
 require_relative 'rules/no_http_rule'
+require_relative 'rules/admin_by_default_rule'
+require_relative 'rules/empty_password_rule'
+require_relative 'rules/invalid_ip_addr_binding_rule'
+require_relative 'rules/suspicious_comment_rule'
+require_relative 'rules/use_of_crypto_algorithms_rule'
 
 
 class RuleEngine
-  @rules=[HardCodedCredentialsRule,NoHTTPRule]
+  @rules=[HardCodedCredentialsRule,NoHTTPRule,AdminByDefaultRule,EmptyPasswordRule,InvalidIPAddrBindingRule,UseWeakCryptoAlgorithmsRule]
 
   class << self
     attr_accessor :rules

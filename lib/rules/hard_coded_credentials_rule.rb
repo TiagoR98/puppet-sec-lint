@@ -1,12 +1,13 @@
 require_relative '../configurations/list_configuration'
 
 class HardCodedCredentialsRule < Rule
-  @default_trigger_words = %w[pwd password pass uuid key crypt secret certificate id cert token ssh_key md5 rsa ssl]
+  @default_trigger_words = %w[pwd password pass key crypt secret certificate cert ssh_key md5 rsa ssl dsa dsa]
+  @invalid_kw_list = %w[( undef true false hiera secret union $ { regsubst hiera_hash pick get_ssl_property inline_template under mysql_password / ssl_ciphersuite ::] # doesnt work becuase include assumes entire string
   @trigger_words_conf = ListConfiguration.new("List of trigger words", @default_trigger_words, "List of words that identify a variable with credentials")
-  @test_conf = BooleanConfiguration.new("Test configuration", true, "This is just a test configuration")
+  @invalid_kw_conf = ListConfiguration.new("List of invalid keywords", @default_trigger_words, "List of keywords that can't be present in a password")
 
   @name = "Hard Coded Credentials"
-  @configurations+=[@trigger_words_conf,@test_conf]
+  @configurations+=[@trigger_words_conf,@invalid_kw_conf]
 
   def self.AnalyzeTokens(tokens)
     result = []
@@ -17,7 +18,6 @@ class HardCodedCredentialsRule < Rule
         token_type   = indi_token.type.to_s ### this gives type for current token
 
         token_line   = indi_token.line ### this gives type for current token
-        nxt_tok_line = nxt_token.line
 
         nxt_nxt_token =  nxt_token.next_code_token # get the next next token to get key value pair
 
@@ -30,7 +30,8 @@ class HardCodedCredentialsRule < Rule
               nxt_nxt_val  = nxt_nxt_token.value.downcase
               nxt_nxt_type = nxt_nxt_token.type.to_s  ## to handle false positives,
 
-              if (self.TriggerWordInString(token_valu)) && ((nxt_nxt_val.length > 0)) && ((!nxt_nxt_type.eql? 'VARIABLE') && (!token_valu.include? "("))
+              if ((self.TriggerWordInString(token_valu)) && (!token_valu.include? "::") && (!token_valu.include? "passive")) &&
+                 ((!token_valu.include? "provider") && (!nxt_nxt_type.eql? 'VARIABLE') && (!@invalid_kw_list.include? nxt_nxt_val) && (nxt_nxt_val.length > 1))
                 result.append(Sin.new(SinType::HardCodedCred, indi_token.line, indi_token.column, nxt_nxt_token.line, nxt_nxt_token.column+nxt_nxt_token.value.length))
               end
             end

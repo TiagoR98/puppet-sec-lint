@@ -6,7 +6,6 @@ require 'optparse'
 require 'optparse/uri'
 require_relative '../lib/visitors/configuration_visitor'
 require_relative '../lib/facades/configuration_file_facade'
-require_relative '../lib/language_server'
 
 options = {}
 OptionParser.new do |opts|
@@ -18,7 +17,8 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:file].nil?
-  LanguageServer
+  require_relative '../lib/language_server'
+  exit
 end
 
 ConfigurationVisitor.GenerateIDs

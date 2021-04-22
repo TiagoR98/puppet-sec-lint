@@ -6,7 +6,7 @@ class SuspiciousCommentRule < Rule
 
   @configurations+=[@trigger_words_conf]
 
-  @name = "Check empty password"
+  @name = "Suspicious comments"
 
   def self.AnalyzeTokens(tokens)
     result = []

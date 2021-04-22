@@ -10,7 +10,7 @@ require_relative 'rules/use_of_crypto_algorithms_rule'
 
 
 class RuleEngine
-  @rules=[HardCodedCredentialsRule,NoHTTPRule,AdminByDefaultRule,EmptyPasswordRule,InvalidIPAddrBindingRule,UseWeakCryptoAlgorithmsRule]
+  @rules=[HardCodedCredentialsRule,NoHTTPRule,AdminByDefaultRule,EmptyPasswordRule,InvalidIPAddrBindingRule,UseWeakCryptoAlgorithmsRule,SuspiciousCommentRule]
 
   class << self
     attr_accessor :rules

@@ -3,7 +3,7 @@ require_relative '../sin'
 require_relative '../sin_type'
 
 class NoHTTPRule < Rule
-  @name="No HTTP Connections"
+  @name="No HTTPS Connections"
 
   def self.AnalyzeTokens(tokens)
     result = []

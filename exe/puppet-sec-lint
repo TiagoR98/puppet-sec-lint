@@ -18,6 +18,7 @@ end.parse!
 
 if options[:file].nil?
   require_relative '../lib/language_server'
+  LanguageServer.start
   exit
 end
 

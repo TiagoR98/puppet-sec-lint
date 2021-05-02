@@ -17,8 +17,16 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:file].nil?
+  linter_server = Thread.new {
+  require_relative '../lib/linter_server'
+  }
+  language_server = Thread.new {
   require_relative '../lib/language_server'
   LanguageServer.start
+  }
+
+  linter_server.join
+  language_server.join
   exit
 end
 

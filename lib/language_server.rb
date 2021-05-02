@@ -22,12 +22,12 @@ class LanguageServer
           puts line
 
           method_name = request['method'].sub('/', '_')
-
           response = if self.respond_to? "client_"+method_name then self.send("client_"+method_name,request['id'],request['params']) end
 
           if not response.nil?
             client.flush
-            client.print("Content-Length: "+response.length.to_s+"\r\n\r\n"+response)
+            client.print("Content-Length: "+response.length.to_s+"\r\n\r\n")
+            client.print(response)
             puts response
           end
         end
@@ -37,7 +37,6 @@ class LanguageServer
   end
 
   def self.client_initialize(id,params)
-    puts params
     return JSON.generate({
       jsonrpc: '2.0',
       result: {
@@ -66,10 +65,8 @@ class LanguageServer
     return
   end
 
-  def self.generate_diagnostics(uri,version = params["textDocument"]["version"],code)
+  def self.generate_diagnostics(uri,version,code)
     result = RuleEngine.analyzeDocument(code) #convert to json
-
-    result_json = []
 
     diagnostics = []
 

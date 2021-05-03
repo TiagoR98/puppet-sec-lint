@@ -1,6 +1,8 @@
+---
 layout: page
 title: "PAGE TITLE"
-permalink: /hard-coded-credentials/
+permalink: /hard-coded-credentials2/
+---
 
 # Hard coded credentials again
 

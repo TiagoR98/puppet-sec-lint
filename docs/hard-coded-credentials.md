@@ -1,6 +1,8 @@
+---
 layout: page
 title: "PAGE TITLE"
 permalink: /hard-coded-credentials/
+---
 
 # Hard coded credentials
 

@@ -10,6 +10,6 @@ class Sin
   end
 
   def ToString
-    return "<Sin:#{@type[:name]}, Line:#{@begin_line}, Char:#{@begin_char}, Message:#{@type[:message]}, Recommendation:#{@type[:recommendation]}>"
+    return "<Sin:#{@type[:name]}, Line:#{@begin_line}, Char:#{@begin_char}, Message:#{@type[:message]}, Recommendation:#{@type[:solution]}>"
   end
 end

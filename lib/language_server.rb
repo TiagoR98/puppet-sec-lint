@@ -77,9 +77,12 @@ class LanguageServer
                              end: { line: sin.end_line-1, character: sin.end_char-1 }
                            },
                            severity: 2,
-                           code: sin.type[:name],
+                           code: {
+                             value:sin.type[:name],
+                             target:sin.type[:solution]
+                           },
                            source:'Puppet-sec-lint',
-                           message: sin.type[:message]+" - [Recommendation] - "+sin.type[:recommendation]
+                           message: sin.type[:message]
                          })
     end
 

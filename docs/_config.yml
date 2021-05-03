@@ -2,3 +2,6 @@ theme: jekyll-theme-hacker
 layout: page
 title: "hard coded credentials"
 permalink: /hard-coded-credentials/
+layout: page
+title: "hard coded credentials2"
+permalink: /hard-coded-credentials2/

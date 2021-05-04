@@ -15,5 +15,6 @@ DisplayField = {
   TextBox: "textbox",
   CheckBox: "checkbox",
   NumericBox: "numericbox",
-  SelectBox: "selectbox"
+  SelectBox: "selectbox",
+  RegexBox: "regexbox"
 }

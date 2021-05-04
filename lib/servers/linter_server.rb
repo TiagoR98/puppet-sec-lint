@@ -35,8 +35,12 @@ class LinterServer
     new_conf = URI.decode_www_form(req.body.read)
     new_conf_hash = Hash[new_conf.map {|key, value| [key, value]}]
 
-    ConfigurationPageFacade.ApplyConfigurations(new_conf_hash)
-    ConfigurationFileFacade.SaveConfigurations
+    begin
+      ConfigurationPageFacade.ApplyConfigurations(new_conf_hash)
+      ConfigurationFileFacade.SaveConfigurations
+    rescue StandardError => error
+      return [400, { 'Content-Type' => 'text/plain' }, ["Error: #{error.message}"]]
+    end
 
     return [200, { 'Content-Type' => 'text/plain' }, ["Changes saved successfully"]]
   end

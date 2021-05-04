@@ -50,6 +50,8 @@ class ConfigurationPageFacade
         return_value+="#{option}\n"
       end
       return_value += "</textarea>"
+    when DisplayField[:TextBox], DisplayField[:RegexBox]
+      return_value += "<input type=\"text\" id=\"#{configuration.id}\" name=\"#{configuration.id}\" value=\"#{configuration.value.to_s}\" size=\"#{configuration.value.to_s.length()}\"><br>\n"
     end
 
     return_value += "<p style=\"color:gray\">#{configuration.description}</p>\n<br>\n"
@@ -71,6 +73,10 @@ class ConfigurationPageFacade
 
         when DisplayField[:SelectBox]
           configuration.value = new_conf[configuration.id].split(/\r?\n/).delete_if(&:empty?)
+
+        when DisplayField[:RegexBox]
+          configuration.value = Regexp.new new_conf[configuration.id]
+
         else
           configuration.value = new_conf[configuration.id]
         end

@@ -1,6 +1,6 @@
 require_relative '../configurations/list_configuration'
-require_relative '../sin'
-require_relative '../sin_type'
+require_relative '../sin/sin'
+require_relative '../sin/sin_type'
 
 class NoHTTPRule < Rule
   @name="No HTTPS Connections"

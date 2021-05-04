@@ -2,10 +2,10 @@ require "rack"
 require "thin"
 require 'json'
 require 'uri'
-require_relative 'rule_engine'
-require_relative 'visitors/configuration_visitor'
-require_relative 'facades/configuration_page_facade'
-require_relative 'facades/configuration_file_facade'
+require_relative '../rule_engine'
+require_relative '../visitors/configuration_visitor'
+require_relative '../facades/configuration_page_facade'
+require_relative '../facades/configuration_file_facade'
 
 class LinterServer
   ConfigurationVisitor.GenerateIDs

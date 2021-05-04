@@ -18,10 +18,10 @@ end.parse!
 
 if options[:file].nil?
   linter_server = Thread.new {
-  require_relative '../lib/linter_server'
+  require_relative '../lib/servers/linter_server'
   }
   language_server = Thread.new {
-  require_relative '../lib/language_server'
+  require_relative '../lib/servers/language_server'
   LanguageServer.start
   }
 

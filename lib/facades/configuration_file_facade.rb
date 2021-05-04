@@ -13,7 +13,7 @@ class ConfigurationFileFacade
         when DisplayField[:SelectBox]
           ini[rule][configuration.id] = configuration.value.join(',')
         else
-          ini[rule][configuration.id] = configuration.value
+          ini[rule][configuration.id] = configuration.value.to_s
         end
       end
     end
@@ -32,6 +32,8 @@ class ConfigurationFileFacade
           case configuration.displayfield
           when DisplayField[:SelectBox]
             configuration.value = ini[rule][configuration.id].split(',')
+          when DisplayField[:RegexBox]
+            configuration.value = Regexp.new ini[rule][configuration.id]
           else
             configuration.value = ini[rule][configuration.id]
           end

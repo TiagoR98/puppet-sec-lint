@@ -66,4 +66,23 @@ class Rule
     end
     return ftokens
   end
+
+  def self.filter_whitelist(tokens)
+    ftokens=tokens.find_all do |hash|
+      !(@whitelist =~ hash.value.downcase)
+    end
+    return ftokens
+  end
+
+  def self.filter_variables(tokens, keywords)
+    line = -1
+    kw_regex = Regexp.new keywords.join("|")
+    ftokens=tokens.find_all do |hash|
+      if (hash.type.to_s == 'VARIABLE' || hash.type.to_s == 'NAME') and hash.value.downcase =~ kw_regex
+        line = hash.line
+      elsif hash.line != line
+        hash
+      end
+    end
+  end
 end

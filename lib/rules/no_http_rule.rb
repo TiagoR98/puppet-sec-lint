@@ -5,17 +5,22 @@ require_relative '../sin/sin_type'
 class NoHTTPRule < Rule
   @name="No HTTPS Connections"
 
-  @whitelist = []
-  HTTP = /^http:\/\/.+/
+  @resources = %w[apt::source ::apt::source wget::fetch yumrepo yum:: aptly::mirror util::system_package yum::managed_yumrepo]
+  @keywords = %w[backport key download uri mirror]
+  @http = /^http:\/\/.+/
+  @whitelist = [] # Todo:Need to check how is this set up
 
+  @resources_conf = ListConfiguration.new("List of resources that can use HTTP", @resources, "List of resources that are known to not use HTTPS but that validate the transferred content with other secure methods.")
+  @keywords_conf = ListConfiguration.new("List of keywords for URLs", @keywords, "List of keywords that identify hyperlinks that should be analyzed.")
+  @http_conf = RegexConfiguration.new("Regular expression of a normal HTTP address", @http, "Regular expression that identifies the URL of a website using the regular non-secure HTTP protocol.")
+
+  @configurations+=[@resources_conf, @keywords_conf, @http_conf]
 
   def self.AnalyzeTokens(tokens)
     result = []
 
-    resources = ['apt::source', '::apt::source', 'wget::fetch', 'yumrepo', 'yum::', 'aptly::mirror', 'util::system_package', 'yum::managed_yumrepo']
-    ptokens = self.filter_resources(tokens, resources)
-    keywords = ['backport', 'key', 'download', 'uri', 'mirror']
-    ctokens = self.filter_variables(ptokens, keywords)
+    ptokens = self.filter_resources(tokens, @resources_conf.value)
+    ctokens = self.filter_variables(ptokens, @keywords_conf.value)
     if @whitelist
       wtokens = self.filter_whitelist(ctokens)
     else
@@ -24,32 +29,12 @@ class NoHTTPRule < Rule
     wtokens.each do |token|
       token_value = token.value.downcase
       token_type = token.type.to_s
-      if (token_value =~ HTTP)
+      if (token_value =~ @http_conf.value)
         result.append(Sin.new(SinType::HttpWithoutTLS, token.line, token.column, token.line, token.column+token_value.length))
       end
     end
 
     return result
   end
-
-  def self.filter_whitelist(tokens)
-    ftokens=tokens.find_all do |hash|
-      !(@whitelist =~ hash.value.downcase)
-    end
-    return ftokens
-  end
-
-  def self.filter_variables(tokens, keywords)
-    line = -1
-    kw_regex = Regexp.new keywords.join("|")
-    ftokens=tokens.find_all do |hash|
-      if (hash.type.to_s == 'VARIABLE' || hash.type.to_s == 'NAME') and hash.value.downcase =~ kw_regex
-        line = hash.line
-      elsif hash.line != line
-        hash
-      end
-    end
-  end
-
 
 end

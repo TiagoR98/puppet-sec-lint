@@ -5,7 +5,9 @@ class InvalidIPAddrBindingRule < Rule
 
   @ip_addr_bin_regex = /^((http(s)?:\/\/)?0.0.0.0(:\d{1,5})?)$/
 
-  IP_ADDR_BIN_REGEX = /^((http(s)?:\/\/)?0.0.0.0(:\d{1,5})?)$/
+  @ip_addr_bin_regex_conf = RegexConfiguration.new("Regular expression of an invalid IP address", @ip_addr_bin_regex, "Regular expression of an IP address considered invalid or insecure to use.")
+
+  @configurations+=[@ip_addr_bin_regex_conf]
 
   def self.AnalyzeTokens(tokens)
     result = []
@@ -17,7 +19,7 @@ class InvalidIPAddrBindingRule < Rule
       if ["EQUALS", "FARROW"].include? token.prev_code_token.type.to_s
         prev_token = token.prev_code_token
         left_side = prev_token.prev_code_token
-        if token_value =~ IP_ADDR_BIN_REGEX and ["VARIABLE", "NAME"].include? left_side.type.to_s
+        if token_value =~ @ip_addr_bin_regex_conf.value and ["VARIABLE", "NAME"].include? left_side.type.to_s
           result.append(Sin.new(SinType::InvalidIPAddrBinding, prev_token.line, prev_token.column, token.line, token.column+token_value.length))
         end
       end

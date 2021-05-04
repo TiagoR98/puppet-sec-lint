@@ -7,18 +7,25 @@ require_relative 'rules/empty_password_rule'
 require_relative 'rules/invalid_ip_addr_binding_rule'
 require_relative 'rules/suspicious_comment_rule'
 require_relative 'rules/use_of_crypto_algorithms_rule'
+require_relative 'rules/cyrillic_homograph_attack'
 
 
 class RuleEngine
-  @rules=[HardCodedCredentialsRule,NoHTTPRule,AdminByDefaultRule,EmptyPasswordRule,InvalidIPAddrBindingRule,UseWeakCryptoAlgorithmsRule,SuspiciousCommentRule]
+  @rules=[HardCodedCredentialsRule,NoHTTPRule,AdminByDefaultRule,EmptyPasswordRule,InvalidIPAddrBindingRule,UseWeakCryptoAlgorithmsRule,SuspiciousCommentRule,CyrillicHomographAttack]
 
   class << self
     attr_accessor :rules
   end
 
   def self.getTokens(code)
-    lexer = PuppetLint::Lexer.new
-    tokens = lexer.tokenise(code)
+    begin
+      lexer = PuppetLint::Lexer.new
+      tokens = lexer.tokenise(code)
+    rescue
+      puts "Error in getting tokens from Puppet-Lint"
+      tokens = []
+    end
+
     return tokens
   end
 

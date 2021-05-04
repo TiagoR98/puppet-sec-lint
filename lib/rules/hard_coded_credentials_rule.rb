@@ -9,33 +9,27 @@ class HardCodedCredentialsRule < Rule
   @name = "Hard Coded Credentials"
   @configurations+=[@trigger_words_conf,@invalid_kw_conf]
 
+  SECRETS = /user|usr|pass(word|_|$)|pwd|key|secret/
+  NON_SECRETS = /gpg|path|type|buff|zone|mode|tag|header|scheme|length|guid/
+
   def self.AnalyzeTokens(tokens)
     result = []
 
-    tokens.each do |indi_token|
-      nxt_token     = indi_token.next_code_token # next token which is not a white space
-      if (!nxt_token.nil?) && (!indi_token.nil?)
-        token_type   = indi_token.type.to_s ### this gives type for current token
-
-        token_line   = indi_token.line ### this gives type for current token
-
-        nxt_nxt_token =  nxt_token.next_code_token # get the next next token to get key value pair
-
-        if  (!nxt_nxt_token.nil?)
-          nxt_nxt_line = nxt_nxt_token.line
-          if (token_type.eql? 'NAME') || (token_type.eql? 'VARIABLE')
-            # puts "Token type: #{token_type}"
-            if (token_line==nxt_nxt_line)
-              token_valu   = indi_token.value.downcase
-              nxt_nxt_val  = nxt_nxt_token.value.downcase
-              nxt_nxt_type = nxt_nxt_token.type.to_s  ## to handle false positives,
-
-              if ((self.TriggerWordInString(token_valu)) && (!token_valu.include? "::") && (!token_valu.include? "passive")) &&
-                 ((!token_valu.include? "provider") && (!nxt_nxt_type.eql? 'VARIABLE') && (!@invalid_kw_list.include? nxt_nxt_val) && (nxt_nxt_val.length > 1))
-                result.append(Sin.new(SinType::HardCodedCred, indi_token.line, indi_token.column, nxt_nxt_token.line, nxt_nxt_token.column+nxt_nxt_token.value.length))
-              end
-            end
-          end
+    # list of known credentials - not considered secrets by the community (https://puppet.com/docs/pe/2019.8/what_gets_installed_and_where.html#user_and_group_accounts_installed)
+    user_default = ['pe-puppet', 'pe-webserver', 'pe-puppetdb', 'pe-postgres', 'pe-console-services', 'pe-orchestration-services','pe-ace-server', 'pe-bolt-server']
+    # some were advised by puppet specialists
+    invalid_values = ['undefined', 'unset', 'www-data', 'wwwrun', 'www', 'no', 'yes', '[]', 'root']
+    ftokens = self.filter_tokens(tokens)
+    ftokens.each do |token|
+      token_value = token.value.downcase
+      token_type = token.type.to_s
+      next_token = token.next_code_token
+      # accepts <VARIABLE> <EQUALS> secret OR <NAME> <FARROW> secret, checks if <VARIABLE> | <NAME> satisfy SECRETS but not satisfy NON_SECRETS
+      if ["VARIABLE", "NAME"].include? token_type and ["EQUALS", "FARROW"].include? next_token.type.to_s and token_value =~ SECRETS and !(token_value =~ NON_SECRETS)
+        right_side_type = next_token.next_code_token.type.to_s
+        right_side_value = next_token.next_code_token.value.downcase
+        if ["STRING", "SSTRING"].include? right_side_type and right_side_value.length > 1 and !invalid_values.include? right_side_value and !(right_side_value =~ /::|\/|\.|\\/ ) and !user_default.include? right_side_value
+          result.append(Sin.new(SinType::HardCodedCred, token.line, token.column, next_token.next_code_token.line, next_token.next_code_token.column+right_side_value.length))
         end
       end
     end
@@ -43,7 +37,4 @@ class HardCodedCredentialsRule < Rule
     return result
   end
 
-  def self.TriggerWordInString(string)
-    return @trigger_words_conf.value.any? { |word| string.include?(word) }
-  end
 end

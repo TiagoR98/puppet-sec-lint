@@ -5,15 +5,21 @@ class InvalidIPAddrBindingRule < Rule
 
   @ip_addr_bin_regex = /^((http(s)?:\/\/)?0.0.0.0(:\d{1,5})?)$/
 
+  IP_ADDR_BIN_REGEX = /^((http(s)?:\/\/)?0.0.0.0(:\d{1,5})?)$/
+
   def self.AnalyzeTokens(tokens)
     result = []
 
-    ftokens = self.filter_tokens_per_value(tokens,"0.0.0.0")
+    ftokens = get_tokens(tokens,"0.0.0.0")
     ftokens.each do |token|
       token_value = token.value.downcase
       token_type = token.type.to_s
-      if token_value =~ @ip_addr_bin_regex and token.prev_code_token.type.to_s != "ISEQUAL"
-        result.append(Sin.new(SinType::InvalidIPAddrBinding, token.line, token.column, token.line, token.column+token.value.length))
+      if ["EQUALS", "FARROW"].include? token.prev_code_token.type.to_s
+        prev_token = token.prev_code_token
+        left_side = prev_token.prev_code_token
+        if token_value =~ IP_ADDR_BIN_REGEX and ["VARIABLE", "NAME"].include? left_side.type.to_s
+          result.append(Sin.new(SinType::InvalidIPAddrBinding, prev_token.line, prev_token.column, token.line, token.column+token_value.length))
+        end
       end
     end
 

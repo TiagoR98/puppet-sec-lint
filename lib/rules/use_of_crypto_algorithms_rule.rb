@@ -15,7 +15,7 @@ class UseWeakCryptoAlgorithmsRule < Rule
         next_token_type = token.next_token.type.to_s
       end
       if (token_value =~ POOR_CRYPTO) && (next_token_type.eql? "LPAREN")
-        result.append(Sin.new(SinType::WeakCryptoAlgorithm, token.line, token.column, token.line, token.column+token.value.length))
+        result.append(Sin.new(SinType::WeakCryptoAlgorithm, token.line, token.column, token.line, token.column+token_value.length))
       end
     end
 

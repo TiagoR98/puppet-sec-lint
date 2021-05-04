@@ -36,4 +36,9 @@ module SinType
     message: "Do not use this algorithm, as it may have security weaknesses.",
     solution: "#{base_url}/weak-crypto-algorithm"
   }
+  CyrillicHomographAttack = {
+    name: "Cyrillic Homograph attack",
+    message: "This link has a cyrillic char. These are not rendered by browsers and are sometimes used for phishing attacks.",
+    solution: "#{base_url}/cyrillic-homograph-attack"
+  }
 end

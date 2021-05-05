@@ -12,4 +12,9 @@ class Sin
   def ToString
     return "<Sin:#{@type[:name]}, Line:#{@begin_line}, Char:#{@begin_char}, Message:#{@type[:message]}, Recommendation:#{@type[:solution]}>"
   end
+
+  def ==(other_object)
+    @type == other_object.type && @begin_line == other_object.begin_line && @begin_char == other_object.begin_char && @end_line == other_object.end_line && @end_char == other_object.end_char
+  end
+
 end

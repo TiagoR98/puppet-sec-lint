@@ -15,6 +15,9 @@ jobs:
       run: |
         gem install bundler -v 2.2.3
         bundle install
-    - name: Run Tests
-      run: |
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Tests
+        run: |
           rake

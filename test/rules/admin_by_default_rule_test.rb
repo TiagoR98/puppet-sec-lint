@@ -11,7 +11,7 @@ class AdminByDefaultRuleTest < Minitest::Test
       )"
 
     expected_result = [
-      Sin.new(SinType::AdminByDefault,2 , 10, 200, 27)
+      Sin.new(SinType::AdminByDefault,2 , 10, 2, 27)
     ]
 
     lexer = PuppetLint::Lexer.new

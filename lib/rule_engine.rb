@@ -6,7 +6,7 @@ require_relative 'rules/admin_by_default_rule'
 require_relative 'rules/empty_password_rule'
 require_relative 'rules/invalid_ip_addr_binding_rule'
 require_relative 'rules/suspicious_comment_rule'
-require_relative 'rules/use_of_crypto_algorithms_rule'
+require_relative 'rules/use_weak_crypto_algorithms_rule'
 require_relative 'rules/cyrillic_homograph_attack'
 
 

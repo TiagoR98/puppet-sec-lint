@@ -73,8 +73,8 @@ class LanguageServer
     result.each do |sin|
       diagnostics.append({
                            range:{
-                             start: { line: sin.begin_line-1, character: sin.begin_char-1 },
-                             end: { line: sin.end_line-1, character: sin.end_char-1 }
+                             start: { line: sin.begin_line-1, character: sin.begin_char },
+                             end: { line: sin.end_line-1, character: sin.end_char }
                            },
                            severity: 2,
                            code: {

@@ -20,7 +20,7 @@ class InvalidIPAddrBindingRule < Rule
         prev_token = token.prev_code_token
         left_side = prev_token.prev_code_token
         if token_value =~ @ip_addr_bin_regex_conf.value and ["VARIABLE", "NAME"].include? left_side.type.to_s
-          result.append(Sin.new(SinType::InvalidIPAddrBinding, prev_token.line, prev_token.column, token.line, token.column+token_value.length))
+          result.append(Sin.new(SinType::InvalidIPAddrBinding, left_side.line, left_side.column, token.line, token.column+token_value.length))
         end
       end
     end

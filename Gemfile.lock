@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    puppet-sec-lint (0.1.0)
+    puppet-sec-lint (0.1.2)
 
 GEM
   remote: https://rubygems.org/

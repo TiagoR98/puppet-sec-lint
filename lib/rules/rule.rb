@@ -69,7 +69,7 @@ class Rule
 
   def self.filter_whitelist(tokens)
     ftokens=tokens.find_all do |hash|
-      !(@whitelist =~ hash.value.downcase)
+      #!(@whitelist =~ hash.value.downcase)
     end
     return ftokens
   end

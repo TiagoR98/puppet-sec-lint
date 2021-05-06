@@ -16,3 +16,5 @@ gem "rack"
 gem 'thin'
 
 gem 'inifile'
+
+gem 'launchy'

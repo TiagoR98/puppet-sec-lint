@@ -2,43 +2,88 @@
 
 require_relative '../lib/rule_engine'
 require 'json'
+require 'launchy'
 require 'optparse'
 require 'optparse/uri'
+require_relative '../lib/puppet-sec-lint/version'
 require_relative '../lib/visitors/configuration_visitor'
 require_relative '../lib/facades/configuration_file_facade'
 
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: puppet-sec-lint [options]"
+conf_page_url = "http://localhost:9292/configuration"
 
-  opts.on("-f", "--file FILE",URI, "Path of puppet file to be analyzed") do |file|
-    options[:file] = file
+options = {}
+@success = true
+
+def analyze_file(file_path)
+  File.open(file_path, 'rb:UTF-8') do |f|
+    puts "Analyzing the file #{File.basename(file_path)}...\n\n"
+
+    code = f.read
+    result = RuleEngine.analyzeDocument(code)
+
+    result.each do |sin|
+      puts sin.ToString
+      @success = false
+    end
+
+    puts "\nFound #{result.length} vulnerabilities in the puppet code.\n"
+  end
+end
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: puppet-sec-lint [file or directory] [options]"
+
+  opts.on("-c", "--configurations", "Open the linter rules configurations page on a browser") do |v|
+    options[:configurations] = v
   end
 end.parse!
 
-if options[:file].nil?
+puts '___  _  _ ___  ___  ____ ___    ____ ____ ____ _  _ ____ _ ___ _   _    _    _ _  _ ___ ____ ____ '
+puts '|__] |  | |__] |__] |___  |     [__  |___ |    |  | |__/ |  |   \_/     |    | |\ |  |  |___ |__/ '
+puts '|    |__| |    |    |___  |     ___] |___ |___ |__| |  \ |  |    |      |___ | | \|  |  |___ |  \ '
+
+puts "\n"
+
+puts "Release v#{PuppetSecLint::VERSION}       #{PuppetSecLint::AUTHOR}      #{PuppetSecLint::YEAR}"
+
+puts "\n"
+
+if not ARGV[0].nil?
+  if File.file?(ARGV[0].to_s) && File.extname(ARGV[0].to_s) == '.pp'
+    analyze_file(ARGV[0].to_s)
+  elsif File.directory?(ARGV[0].to_s)
+    Dir.chdir(ARGV[0].to_s)
+    files = Dir.glob("**/*.pp").map {|f| File.join(Dir.pwd,f) }
+
+    files.each do |file_path|
+      analyze_file(file_path)
+      puts "\n"
+    end
+  else
+    raise "#{ARGV[0].to_s} is neither a valid directory or puppet file"
+  end
+end
+
+if ARGV[0].nil? || options[:configurations]
   linter_server = Thread.new {
   require_relative '../lib/servers/linter_server'
   }
   language_server = Thread.new {
-  require_relative '../lib/servers/language_server'
-  LanguageServer.start
-  }
+    require_relative '../lib/servers/language_server'
+    LanguageServer.start
+    }
+
+  if options[:configurations]
+    puts "\nLaunching configurations page at #{conf_page_url}...\n\n"
+    Launchy.open(conf_page_url)
+  else
+    puts "\nLinter configurations page available at #{conf_page_url}\n\n"
+  end
 
   linter_server.join
-  language_server.join
-  exit
+  language_server.exit
 end
 
-ConfigurationVisitor.GenerateIDs
-ConfigurationFileFacade.LoadConfigurations
+exit(@success)
 
-File.open(options[:file].to_s, 'rb:UTF-8') do |f|
-  code = f.read
 
-  result = RuleEngine.analyzeDocument(code)
-
-  result.each do |sin|
-    puts sin.ToString
-  end
-end

@@ -10,8 +10,9 @@ class LanguageServer
   ConfigurationVisitor.GenerateIDs
   ConfigurationFileFacade.LoadConfigurations
 
-  def self.start
-    server = TCPServer.open(5007)
+  def self.start(port)
+    port ||= 5007
+    server = TCPServer.open(port)
 
     loop {
       Thread.fork(server.accept) do |client|

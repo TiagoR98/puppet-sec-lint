@@ -45,6 +45,8 @@ class LinterServer
     return [200, { 'Content-Type' => 'text/plain' }, ["Changes saved successfully"]]
   end
 
-end
+  def self.start(port)
+    Rack::Handler::Thin.run(LinterServer.new, :Port => port)
+  end
 
-Rack::Handler::Thin.run(LinterServer.new, :Port => 9292)
+end

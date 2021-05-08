@@ -9,7 +9,13 @@ require_relative '../lib/puppet-sec-lint/version'
 require_relative '../lib/visitors/configuration_visitor'
 require_relative '../lib/facades/configuration_file_facade'
 
-conf_page_url = "http://localhost:9292/configuration"
+#get free port
+loop do
+  $port = rand(3000..9999)
+  break if (Socket.tcp('localhost', port, connect_timeout: 5) { false } rescue true)
+end
+
+conf_page_url = "http://localhost:#{$port}/configuration"
 
 options = {}
 @success = true
@@ -35,6 +41,10 @@ OptionParser.new do |opts|
 
   opts.on("-c", "--configurations", "Open the linter rules configurations page on a browser") do |v|
     options[:configurations] = v
+  end
+
+  opts.on("-p", "--port=PORT", "TCP Port open for socket communication with the language server (Default:5007)") do |port|
+    options[:port] = port
   end
 end.parse!
 
@@ -66,18 +76,19 @@ end
 
 if ARGV[0].nil? || options[:configurations]
   linter_server = Thread.new {
-  require_relative '../lib/servers/linter_server'
+    require_relative '../lib/servers/linter_server'
+    LinterServer.start($port)
   }
   language_server = Thread.new {
     require_relative '../lib/servers/language_server'
-    LanguageServer.start
+    LanguageServer.start(options[:port])
     }
 
   if options[:configurations]
     puts "\nLaunching configurations page at #{conf_page_url}...\n\n"
     Launchy.open(conf_page_url)
   else
-    puts "\nLinter configurations page available at #{conf_page_url}\n\n"
+    puts "\nLinter configurations page available at #{conf_page_url} #{@port}\n\n"
   end
 
   linter_server.join

@@ -88,7 +88,8 @@ if ARGV[0].nil? || options[:configurations]
     puts "\nLaunching configurations page at #{conf_page_url}...\n\n"
     Launchy.open(conf_page_url)
   else
-    puts "\nLinter configurations page available at #{conf_page_url} #{@port}\n\n"
+    puts "\nLinter configurations page available at #{conf_page_url}\n\n"
+    puts "-----------------------------------------------------------------------"
   end
 
   linter_server.join

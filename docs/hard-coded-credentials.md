@@ -3,7 +3,7 @@ title: Hard Coded Credentials
 permalink: /hard-coded-credentials/
 ---
 
-# Hard Coded Credentialss
+# Hard Coded Credentials
 
 ## What are they?
 

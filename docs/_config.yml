@@ -27,7 +27,6 @@ markdown: kramdown
 theme: jekyll-theme-hacker
 plugins:
   - jekyll-feed
-root: /docs
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

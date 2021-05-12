@@ -1,8 +1,3 @@
----
-title: Hard Coded Credentials
-permalink: /hard-coded-credentials/
----
-
 # Hard Coded Credentials
 
 ## What are they?

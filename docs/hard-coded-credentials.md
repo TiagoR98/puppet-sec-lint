@@ -4,7 +4,7 @@ permalink: /hard-coded-credentials/
 layout: default
 ---
 
-# Hard Coded Credentials
+# Hard Coded Credentialss
 
 ## What are they?
 

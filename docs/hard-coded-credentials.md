@@ -1,6 +1,7 @@
 ---
 title: Hard Coded Credentials
 permalink: /hard-coded-credentials/
+layout: default
 ---
 
 # Hard Coded Credentials

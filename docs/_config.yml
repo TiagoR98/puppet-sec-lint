@@ -17,7 +17,7 @@ title: Puppet Securtiy Linter
 email: tiago7b27@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Scurity focused linter to detect and help solve vulnearbilities found on Puppet Infrastructure-as-code scripts
-baseurl: "" # the subpath of your site, e.g. /blog
+#baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll

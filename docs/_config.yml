@@ -16,7 +16,7 @@
 title: Puppet Security Linter
 email: tiago7b27@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Scurity focused linter to detect and help solve vulnearbilities found on Puppet Infrastructure-as-code scripts
+  Security focused linter to detect and help solve vulnerabilities found on Puppet Infrastructure-as-code scripts
 
 # Build settings
 markdown: kramdown

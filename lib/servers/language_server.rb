@@ -7,8 +7,6 @@ require_relative '../facades/configuration_page_facade'
 require_relative '../facades/configuration_file_facade'
 
 class LanguageServer
-  ConfigurationVisitor.GenerateIDs
-  ConfigurationFileFacade.LoadConfigurations
 
   def self.start(port)
     port ||= 5007

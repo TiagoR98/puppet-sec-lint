@@ -1,5 +1,4 @@
 require "rack"
-require "thin"
 require 'json'
 require 'uri'
 require_relative '../rule_engine'
@@ -8,8 +7,6 @@ require_relative '../facades/configuration_page_facade'
 require_relative '../facades/configuration_file_facade'
 
 class LinterServer
-  ConfigurationVisitor.GenerateIDs
-  ConfigurationFileFacade.LoadConfigurations
 
   def call(env)
     req = Rack::Request.new(env)
@@ -46,7 +43,7 @@ class LinterServer
   end
 
   def self.start(port)
-    Rack::Handler::Thin.run(LinterServer.new, :Port => port)
+    Rack::Handler::WEBrick.run(LinterServer.new, :Port => port)
   end
 
 end

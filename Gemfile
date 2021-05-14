@@ -13,7 +13,7 @@ gem "puppet-lint"
 
 gem "rack"
 
-gem 'thin'
+gem 'webrick'
 
 gem 'inifile'
 

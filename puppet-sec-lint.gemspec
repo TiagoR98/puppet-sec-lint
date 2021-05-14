@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rake', '~> 13.0'
   spec.add_runtime_dependency 'minitest', '~> 5.0'
   spec.add_runtime_dependency 'rack', '~> 2.2.3'
-  spec.add_runtime_dependency 'thin', '~> 1.8.0'
+  spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   spec.add_runtime_dependency 'inifile', '~> 3.0.0'
   spec.add_runtime_dependency 'launchy', '~> 2.5.0'
 

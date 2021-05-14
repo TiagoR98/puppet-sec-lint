@@ -21,8 +21,9 @@ class RuleEngine
     begin
       lexer = PuppetLint::Lexer.new
       tokens = lexer.tokenise(code)
-    rescue
+    rescue => error
       puts "Error in getting tokens from Puppet-Lint"
+      puts error.backtrace
       tokens = []
     end
 

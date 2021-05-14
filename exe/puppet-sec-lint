@@ -9,6 +9,9 @@ require_relative '../lib/puppet-sec-lint/version'
 require_relative '../lib/visitors/configuration_visitor'
 require_relative '../lib/facades/configuration_file_facade'
 
+ConfigurationVisitor.GenerateIDs
+ConfigurationFileFacade.LoadConfigurations
+
 #get free port
 loop do
   $port = rand(3000..9999)

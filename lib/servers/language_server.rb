@@ -18,7 +18,7 @@ class LanguageServer
           length=Integer(line.scan(/\d/).join(''))
           line=client.read(length+2)
           request = JSON.parse(line)
-          puts line
+          $logger.debug(line)
 
           method_name = request['method'].sub('/', '_')
           response = if self.respond_to? "client_"+method_name then self.send("client_"+method_name,request['id'],request['params']) end
@@ -27,7 +27,7 @@ class LanguageServer
             client.flush
             client.print("Content-Length: "+response.length.to_s+"\r\n\r\n")
             client.print(response)
-            puts response
+            $logger.debug(response)
           end
         end
         client.close

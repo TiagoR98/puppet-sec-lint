@@ -18,3 +18,5 @@ gem 'webrick'
 gem 'inifile'
 
 gem 'launchy'
+
+gem 'logger'

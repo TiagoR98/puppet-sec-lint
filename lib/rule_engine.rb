@@ -22,8 +22,8 @@ class RuleEngine
       lexer = PuppetLint::Lexer.new
       tokens = lexer.tokenise(code)
     rescue => error
-      puts "Error in getting tokens from Puppet-Lint"
-      puts error.backtrace
+      $logger.error("Error in getting tokens from Puppet-Lint")
+      $logger.error(error.backtrace)
       tokens = []
     end
 
@@ -40,7 +40,7 @@ class RuleEngine
           (result << rule.AnalyzeTokens(tokens)).flatten!
         end
       rescue
-        puts "Error in running rule #{rule.name}"
+        $logger.error("Error in running rule #{rule.name}")
       end
     end
 

@@ -1,4 +1,5 @@
 require "rack"
+require 'webrick'
 require 'json'
 require 'uri'
 require_relative '../rule_engine'
@@ -43,7 +44,8 @@ class LinterServer
   end
 
   def self.start(port)
-    Rack::Handler::WEBrick.run(LinterServer.new, :Port => port)
+    log = WEBrick::Log.new $stdout,1
+    Rack::Handler::WEBrick.run(LinterServer.new, :Port => port,Logger: log )
   end
 
 end

@@ -5,12 +5,16 @@ require 'json'
 require 'launchy'
 require 'optparse'
 require 'optparse/uri'
+require 'logger'
 require_relative '../lib/puppet-sec-lint/version'
 require_relative '../lib/visitors/configuration_visitor'
 require_relative '../lib/facades/configuration_file_facade'
 
 ConfigurationVisitor.GenerateIDs
 ConfigurationFileFacade.LoadConfigurations
+
+$logger = Logger.new(STDOUT)
+$logger.level = Logger::ERROR
 
 #get free port
 loop do
@@ -48,6 +52,11 @@ OptionParser.new do |opts|
 
   opts.on("-p", "--port=PORT", "TCP Port open for socket communication with the language server (Default:5007)") do |port|
     options[:port] = port
+  end
+
+  opts.on("-v", "--verbose", "Verbose mode (shows all communications and other debug info)") do |v|
+    options[:verbose] = v
+    $logger.level = Logger::DEBUG
   end
 end.parse!
 

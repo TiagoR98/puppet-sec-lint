@@ -35,8 +35,12 @@ class RuleEngine
     tokens = self.getTokens(code)
 
     @rules.each do |rule|
-      if rule.configurations[0].value
-        (result << rule.AnalyzeTokens(tokens)).flatten!
+      begin
+        if rule.configurations[0].value
+          (result << rule.AnalyzeTokens(tokens)).flatten!
+        end
+      rescue
+        puts "Error in running rule #{rule.name}"
       end
     end
 

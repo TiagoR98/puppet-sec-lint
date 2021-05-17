@@ -29,3 +29,7 @@ A server or service that's open to all kinds of connections it's more exposed to
 ## How to avoid it?
 
 Properly configuring binding addresses means that the server should only accept connections from trusted networks known to use the service. This ensures a greater level of control and also protection, as an attacker would know have an extra obstacle in trying to gain access first to one of those networks.
+
+## More related information
+
+* [CWE-284: Improper Access Control](https://cwe.mitre.org/data/definitions/284.html)

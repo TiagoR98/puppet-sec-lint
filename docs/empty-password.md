@@ -25,3 +25,7 @@ An attacker looking to gain access to an account my try a couple of different ge
 ## How to avoid it?
 
 Secure software systems should have a decent password policy that prevents, among other types, empty passwords. This means that it's very likely for the Puppet manifest to fail as the password would be rejected. But even if the target software accepts empty passwords, a long and hard to guess password is always a much safer option against malicious attacks.
+
+## More related information
+
+* [CWE-258: Empty Password in Configuration File](https://cwe.mitre.org/data/definitions/258.html)

@@ -38,3 +38,7 @@ After the tool detects the presence of Cyrillic characters on a URL, the best co
 Then, check if the domain is well written (subtle misspellings with similar letters are very common in these kinds of attacks).
 
 To better ensure that the domain is actually the correct one, the URL can also be copied from a trusted source.
+
+## More related information
+
+* [CWE-1007: Insufficient Visual Distinction of Homoglyphs Presented to User](https://cwe.mitre.org/data/definitions/1007.html)

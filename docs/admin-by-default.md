@@ -25,3 +25,7 @@ Any account with the power to do everything in the system is a very dangerous si
 ## How to avoid it?
 
 Accounts should always be setup up with the [Principle of least privilege](https://us-cert.cisa.gov/bsi/articles/knowledge/principles/least-privilege) in mind, meaning that all accounts should only get the permissions strictly necessary to perform their required tasks during the minimum amount of time possible. This severely limits the exposure to accidental errors and also to malicious attackers.
+
+## More related information
+
+* [CWE-250: Execution with Unnecessary Privileges](https://cwe.mitre.org/data/definitions/250.html)

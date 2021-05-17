@@ -29,3 +29,8 @@ An attacker who was able to gain access to a server and steal the hashes from al
 ## How to avoid it?
 
 If the Puppet manifest is being used to generate hashes for passwords or important data, using a more secure algorithm like SHA256 is very advisable as it avoids exposure to the risks mentioned above, ensuring that the algorithm actually performs what's intended to.
+
+## More related information
+
+* [CWE-326: Inadequate Encryption Strength](https://cwe.mitre.org/data/definitions/326.html)
+* [CWE-327: Use of a Broken or Risky Cryptographic Algorithm](https://cwe.mitre.org/data/definitions/327.html)

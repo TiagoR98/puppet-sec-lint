@@ -78,3 +78,8 @@ file { '/etc/mysql/server-key.pem':
   content => hiera("privatekey"),
 }
 ```
+
+## More related information
+
+* [CWE-259: Use of Hard-coded Password](https://cwe.mitre.org/data/definitions/259.html)
+* [CWE-798: Use of Hard-coded Credentials](https://cwe.mitre.org/data/definitions/798.html)

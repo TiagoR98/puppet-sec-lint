@@ -6,7 +6,7 @@ layout: default
 
 # Invalid IP Address binding
 
-## What it it?
+## What is it?
 
 Binding an IP address to a server or service means authorizing connections incoming from those networks. This allows to limit what kind of incoming connections a server may or may not accept. Binding the 0.0.0.0 IP address to a service means that any connection from any network is accepted.
 

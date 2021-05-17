@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tiago Ribeiro"]
   spec.email         = ["tiago7b27@gmail.com"]
 
-  spec.summary       = "This is a security linter for the puppet language"
-  spec.description   = "This is a more complete security linter for the puppet language"
+  spec.summary       = "Security vulnerabilities linter for Puppet Manifests"
+  spec.description   = "Linter built to detect potential security vulnerabilities in Puppet manifests code. It also offers integration with Visual Studio Code https://marketplace.visualstudio.com/items?itemName=tiago1998.puppet-sec-lint-vscode"
   spec.homepage      = "https://github.com/TiagoR98/puppet-sec-lint"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")

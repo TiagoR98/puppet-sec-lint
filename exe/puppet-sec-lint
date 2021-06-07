@@ -70,6 +70,8 @@ puts "Release v#{PuppetSecLint::VERSION}       #{PuppetSecLint::AUTHOR}      #{P
 
 puts "\n"
 
+STDOUT.flush
+
 if not ARGV[0].nil?
   if File.file?(ARGV[0].to_s) && File.extname(ARGV[0].to_s) == '.pp'
     analyze_file(ARGV[0].to_s)
@@ -102,6 +104,7 @@ if ARGV[0].nil? || options[:configurations]
   else
     puts "\nLinter configurations page available at #{conf_page_url}\n\n"
     puts "-----------------------------------------------------------------------"
+    STDOUT.flush
   end
 
   linter_server.join

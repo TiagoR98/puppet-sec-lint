@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PuppetSecLint
-  VERSION = "0.5.15
+  VERSION = "0.5.16
 "
   YEAR = "2021"
   AUTHOR = "TQRG"

@@ -108,3 +108,9 @@ After following these steps, the rule should then be automatically run everytime
 ## Code of Conduct
 
 <!-- Everyone interacting in the Puppet::Sec::Lint project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/puppet-sec-lint/blob/master/CODE_OF_CONDUCT.md).-->
+
+## Release Notes
+
+### 1.0.0
+
+Initial release. It supports analysis of Puppet manifests and user configuration of rules.

@@ -75,8 +75,7 @@ class ConfigurationPageFacade
           configuration.value = new_conf[configuration.id].split(/\r?\n/).delete_if(&:empty?)
 
         when DisplayField[:RegexBox]
-          configuration.value = Regexp.new new_conf[configuration.id]
-
+          configuration.value = if new_conf[configuration.id].empty? then new_conf[configuration.id] else Regexp.new new_conf[configuration.id] end
         else
           configuration.value = new_conf[configuration.id]
         end

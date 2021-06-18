@@ -22,7 +22,7 @@ class NoHTTPRule < Rule
 
     ptokens = self.filter_resources(tokens, @resources_conf.value)
     ctokens = self.filter_variables(ptokens, @keywords_conf.value) #TODO: It's working upside down
-    if not @whitelist_conf.value.empty?
+    if not @whitelist_conf.value.to_s.empty?
       wtokens = self.filter_whitelist(ctokens, @whitelist_conf.value)
     else
       wtokens = ptokens

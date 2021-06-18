@@ -50,20 +50,52 @@ puppet-sec-lint -c
 
 ## Development
 
-### Development of new rules
-
 The linter was built on top of a modular architecture, which means that new customizable rules can be added fairly easy facing the discovery of new scenarios and vulnerabilities.
 
-<!--
-(add instructions on how to clone, build and run tool)
+### Cloning and running 
 
-(add instructions on where and how to add new rule and configurations)
--->
+To add new functionality to the tool, start by cloning the repository into a folder.
+To run the software locally, run the executable **exe/puppet-sec-lint** from a command line.
 
-<!--After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### Adding new rules
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).-->
+To add a new rule, the easiest way is to duplicate the file of an existing rule inside the **lib/rules** folder. Taking the *Admin By Default* rule as an example, here is everything that can be changed and customized.
 
+![puppet-sec-lint rule](docs/images/puppet-sec-lint_rule.png)
+
+#### Naming
+
+The class should have an unique and meaningful name, both at the class name itself and the property @Name (that's what's displayed in the Configurations page). It should also be derived from the **Rule** class.
+
+#### Token analysis
+
+Each rule works by running the **AnalyzeTokens** method, receiving a list of tokens (that represent the entire code of the file being analyzed) and after analyzing everything, it should return a list of results (each result is a vulnerability found represented by the **Sin** class). Adding new types of vulnerabilities can be done by adding new elements to the **SinType** class.
+
+#### Configurations
+
+To add configurable elements to the class, simply create new instances of the child classes of the **Configuration** class, as exemplified in the above rule. The constructor takes as arguments the title and description (to be shown in the configurations page) and the initial default value (before the user modifies the application settings).
+
+All configurations should then be added to the @configurations array.
+
+The current types of configurations available (children of the **Configuration** class) are:
+
+* Boolean
+  
+  ![puppet-sec-lint configuration_bool](docs/images/puppet-sec-lint_configuration_bool.png)
+* List of elements
+  
+  ![puppet-sec-lint configuration_list](docs/images/puppet-sec-lint_configuration_list.png)
+* Regular Expression
+  
+  ![puppet-sec-lint configuration_regex](docs/images/puppet-sec-lint_configuration_regex.png)
+
+#### Add rule to rule engine
+
+The final step is to ensure that the Rule Engine can detect and run the rule everytime an analysis is performed. As such, in the **lib/rule_engine.rb** file, import the newly created rule and add it to the @rules array.
+
+---
+
+After following these steps, the rule should then be automatically run everytime an analysis is performed. Also, the configurations now show up automatically in the configurations page, giving the user the possibility to customize its values. 
 
 ## Contributing
 
